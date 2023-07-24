@@ -1,10 +1,24 @@
 ---
 title: "Creating a standard data set for analysis"
+format:
+  jasa-pdf:
+    keep-tex: true  
+    journal:
+      blinded: false
+  jasa-html: default
+date: last-modified
+
 author: 
   - name: Jun Yan
-    organization: University of Connecticut
+    acknowledgements: !
+      The authors gratefully acknowledge _please remember to list all relevant funding sources in the non-anonymized (unblinded) version_.
+    affiliations:
+      - name: University of Connecticut
+        department: Department of Statistics
   - name: Douglas Bates
-    organization: University of Wisconsin - Madison
+    affiliations:
+      - name: University of Wisconsin - Madison
+        department: Department of Statistics
 jupyter: julia-1.9
 abstract: |
   We show conversion of a CSV file containing data on 311 service requests in New York City during March, 2023 to the [Arrow](https://arrow.apache.org) IPC (Inter-Process Communication) file format.
@@ -20,10 +34,10 @@ keywords:
 execute:
   cache: true
   freeze: auto
-format: pdf
+bibliography: bibliography.bib
 ---
 
-# Introduction
+## Introduction {#sec-intro}
 
 A common starting point for a data science project is one or more data tables, often provided as CSV (comma-separated value) files.
 For our purposes a "data table" is a structure like a `dataframe` in [R](https://www.r-project), which is a named, ordered collection of columns, each of which is homogeneous (all elements of the column have the same type and internal representation) and all of which have the same length.
@@ -42,18 +56,18 @@ When the data in a particular file come from many different sources, as is the c
 Experienced data scientists are aware that a substantial part of an analysis or report generation is often the "data cleaning" involved in preparing the data for analysis.
 And this can be an open-ended task - it required several trial-and-error iterations to create the list of different missing data representations we use for the sample CSV file and even now we are not sure we have them all.
 
-Thus, the ease of creating and distributing a CSV file must be balanced against the difficulty and uncertainty of reading its contents, possibly into different language frameworks, such as [R](https://www.R-project.org), [Python](https://python.org) or [Julia](https://julialang.org).
+Thus, the ease of creating and distributing a CSV file must be balanced against the difficulty and uncertainty of reading its contents, possibly into different language frameworks, such as [R](https://www.R-project.org), [Python](https://python.org) or [Julia](https://julialang.org) [@Bezanson_Julia_A_fresh_2017].
 The [Arrow](https://arrow.apache.org) data format and its Inter-Process Communications (IPC) file format provide an unambigous data representation that can be read quickly and easily in many different languages used by data scientists.
 There is provision for storing metadata about the table as a whole and about individual columns within the Arrow IPC file.
 Finally, the size of the Arrow IPC file is often much, much smaller than the original CSV file.
 
-## The sample data
+### The sample data
 
 To illustrate conversion of a CSV file to Arrow IPC we use data on service requests to the 311 city government line (like the 911-emergency contact number but for non-emergency requests), in New York City during March, 2023.
 
 The data were downloaded from ...
 
-# Reading the CSV file as a DataFrame {#sec-reading}
+## Reading the CSV file as a DataFrame {#sec-reading}
 
 First, attach the packages to be used, assign the name of the CSV file, and check its size in MB.
 
@@ -68,7 +82,7 @@ There are also a variety of different missing value indicators used in this file
 The list of missing value indicators in the call to `CSV.read` shown below was created by a tedious process of trial and error.
 
 Two of the columns, `Latitude` and `Longitude`, are expressed as floating point numbers, which we store as 32-bit floats, the `Float32` type in Julia, that provides sufficient precision for the accuracy to which latitude and longitude can be determined by GPS.
-Furthermore we determined that, in the CSV file, the `Location` column, is a combination of the character strings in the `Latitude` and `Longitude` columns and can be dropped without loss of information. 
+Furthermore we determined that, in the CSV file, the `Location` column is a combination of the character strings in the `Latitude` and `Longitude` columns and can be dropped without loss of information. 
 
 Read the CSV file as a `DataFrame` and check the number of rows and columns of this dataframe.
 
@@ -152,7 +166,7 @@ filesize(arrownm) / 10^6  # size of pruned, compressed Arrow IPC file in MB
 
 Note the remarkable reduction in the size of this compressed Arrow file (less than 18 MB) compared to the original CSV file (over 156 MB).
 
-## Accessing the data from different environments
+## Accessing the data from different environments {#sec-accessing}
 
 Suppose we wish to create a table of the number of service requests by `Agency`, in decreasing order.
 
@@ -191,4 +205,30 @@ pldf.groupby("Agency").
     agg([pl.col("Agency").count().alias("count")]).
     sort("count", descending=true)
 ```
+
+
+## Conclusion {#sec-conc}
+
+## Disclosure statement
+
+The authors have the following conflicts of interest to declare (or replace with a statement that no conflicts of interest exist).
+
+## Data Availability Statement
+
+Deidentified data have been made available at the following URL: XX.
+
+## Supplementary Material {.supplementary}
+
+Title:
+
+:   Brief description. (file type)
+
+
+R-package for  MYNEW routine: 
+
+:   R-package MYNEW containing code to perform the diagnostic methods described in the article. The package also contains all datasets used as examples in the article. (GNU zipped tar file)
+
+HIV data set:
+
+:   Data set used in the illustration of MYNEW method in @sec-intro (.txt file).
 

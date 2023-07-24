@@ -10,5 +10,7 @@ _freeze/
 .jupyter_cache/
 data/
 nyc311clean_files/
-
+csv2arrow_files/
 /.quarto/
+
+/.luarc.json
