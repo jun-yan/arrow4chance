@@ -1,0 +1,194 @@
+---
+title: "Creating a standard data set for analysis"
+author: 
+  - name: Jun Yan
+    organization: University of Connecticut
+  - name: Douglas Bates
+    organization: University of Wisconsin - Madison
+jupyter: julia-1.9
+abstract: |
+  We show conversion of a CSV file containing data on 311 service requests in New York City during March, 2023 to the [Arrow](https://arrow.apache.org) IPC (Inter-Process Communication) file format.
+  The purpose is to create a canonical version of the data that can be used as a starting point for analysis in many different environments including R, Python and Julia.
+  In a CSV file all representations of data values are textual, leading to redundancy and uncertainty of interpretation.
+  In an Arrow file the schema of the table is stored with the data in a binary format that can be memory-mapped for reading, providing essentially instantaneous reading of potentially large data sets.
+  In our example this conversion is done in [Julia](https://julialang.org) which has powerful packages for reading and writing CSV or Arrow files.
+  But it could equally well have been done in a different language, if that is more convenient for the person doing the conversion.
+keywords:
+  - Arrow IPC format
+  - CSV files
+  - data cleaning
+execute:
+  cache: true
+  freeze: auto
+format: pdf
+---
+
+# Introduction
+
+A common starting point for a data science project is one or more data tables, often provided as CSV (comma-separated value) files.
+For our purposes a "data table" is a structure like a `dataframe` in [R](https://www.r-project), which is a named, ordered collection of columns, each of which is homogeneous (all elements of the column have the same type and internal representation) and all of which have the same length.
+The columns can contain numeric values --- such as Boolean, integer or floating point numbers --- or character strings or other data types, with the above restriction that each column must be homogeneous.
+Another common data type is a `factor` or `categorical` representation where each data value assumes one of a limited number of choices, typically represented as character strings.
+For example, each element of a column named `Sex` may be restricted to one of `Female`, `Male`, or `Non-binary`.
+Furthermore, it is often important that a column can represent a "missing data" value, as we will see in our example below.
+
+The CSV format (and related formats like TSV - tab-separated values) for data tables is ubiquitous, convenient, and can be read or written by many different data analysis environments, including spreadsheets.
+
+An advantage of the textual representation of the data in a CSV file is that the entire data table, or portions of it, can be previewed in a text editor.
+However, the textual representation can be ambiguous and inconsistent.
+The format of a particular column: Boolean, integer, floating-point, text, factor, etc. must be inferred from text representation, often at the expense of reading the entire file before these inferences can be made.
+
+When the data in a particular file come from many different sources, as is the case for the "311 Service Requests in New York City" data that we will use for illustration, those entering the data seem to be particularly creative in choosing representations of missing data, time-date formats, etc.
+Experienced data scientists are aware that a substantial part of an analysis or report generation is often the "data cleaning" involved in preparing the data for analysis.
+And this can be an open-ended task - it required several trial-and-error iterations to create the list of different missing data representations we use for the sample CSV file and even now we are not sure we have them all.
+
+Thus, the ease of creating and distributing a CSV file must be balanced against the difficulty and uncertainty of reading its contents, possibly into different language frameworks, such as [R](https://www.R-project.org), [Python](https://python.org) or [Julia](https://julialang.org).
+The [Arrow](https://arrow.apache.org) data format and its Inter-Process Communications (IPC) file format provide an unambigous data representation that can be read quickly and easily in many different languages used by data scientists.
+There is provision for storing metadata about the table as a whole and about individual columns within the Arrow IPC file.
+Finally, the size of the Arrow IPC file is often much, much smaller than the original CSV file.
+
+## The sample data
+
+To illustrate conversion of a CSV file to Arrow IPC we use data on service requests to the 311 city government line (like the 911-emergency contact number but for non-emergency requests), in New York City during March, 2023.
+
+The data were downloaded from ...
+
+# Reading the CSV file as a DataFrame {#sec-reading}
+
+First, attach the packages to be used, assign the name of the CSV file, and check its size in MB.
+
+```{julia}
+using Arrow, CSV, DataFrames, PyCall, RCall
+csvnm = joinpath("data", "311_Service_Requests_2023_03.csv")
+filesize(csvnm) / 10^6     # size of CSV file in MB
+```
+
+A visual inspection of the first few lines in the file showed the format in which date-times were expressed (which, fortunately, was consistent within the file) and the fact that there are embedded blanks in many of the column names.
+There are also a variety of different missing value indicators used in this file.
+The list of missing value indicators in the call to `CSV.read` shown below was created by a tedious process of trial and error.
+
+Two of the columns, `Latitude` and `Longitude`, are expressed as floating point numbers, which we store as 32-bit floats, the `Float32` type in Julia, that provides sufficient precision for the accuracy to which latitude and longitude can be determined by GPS.
+Furthermore we determined that, in the CSV file, the `Location` column, is a combination of the character strings in the `Latitude` and `Longitude` columns and can be dropped without loss of information. 
+
+Read the CSV file as a `DataFrame` and check the number of rows and columns of this dataframe.
+
+```{julia}
+df = CSV.read(
+    csvnm,                # file name
+    DataFrame,            # output table type
+    normalizenames=true,  # convert col names to valid symbols
+    missingstring=[       # strings that indicate missing values
+        "",
+        "0 Unspecified",
+        "N/A",
+        "na",
+        "na na",
+        "Unspecified",
+        "UNKNOWN",
+    ],
+    dateformat="m/d/Y I:M:S p",
+    downcast=true,        # use smallest possible Int types 
+    stripwhitespace=true, # strip leading and trailing whitespace
+    types=Dict(:Latitude => Float32, :Longitude => Float32),
+    drop=[:Location],     # Latitude and Longitude are sufficient
+)
+size(df)                  # number of rows/columns in df
+```
+
+A brief description of the columns can be obtained as
+
+```{julia}
+describe(df, :eltype, :nmissing, :nunique, :min)
+```
+
+Note that already we can see a problem with the earliest `Closed_Date` entry, which is several months before the earliest `Created_Date`.
+Also, there are 15 unique `Agency` acronyms but only 14 unique `Agency_Name`s. 
+
+## Creating a Arrow IPC file
+
+For illustration we create an Arrow IPC file of the first 6 columns
+
+```{julia}
+#| output: false
+first6nm = Arrow.write(  # returns the name of the file
+    joinpath("data", "311_requests_2023_03_first6.arrow"),
+    df[:, 1:6],          # `:` as the first index indicates all rows
+)
+```
+
+and read this file using the Python `pyarrow` package, called from within Julia using the `PyCall` package for Julia.
+
+```{julia}
+fea = pyimport("pyarrow.feather")  # like `import pyarrow.feather as fea`
+fea.read_table(first6nm)
+```
+
+A table read by `pyarrow.feather.read_table` is described in two sections by the default print method.
+The first section is a detailed schema, which is a description of each column including the column name, the storage mode and whether missing (i.e. `null`) values are disallowed.
+The second section shows several values from the beginning and from the end of each column.
+
+The schema section shows that the `Unique_Key` column consists of 32-bit signed integers without missing values; the `Created_Date` column is a timestamp with millisecond precision and without missing values; and the `Closed_Date` column is also a timestamp that can (and does) contain missing values.
+
+The next three columns are stored as `dictionary` types, which are like the `factor` type in R or the `categorical` type in [Polars](https://pola.rs).
+The elements of these columns are character strings but with considerable repetition of values.
+Instead of storing a separate string for each row in these columns the unique values are stored in a "dictionary" and the value for each row is determined from an index into the dictionary.
+(The Arrow specification requires these to be 0-based indices.)
+If the size of the dictionary is small, the indices can be small integer types; 8-bit signed integers for the `Agency` and `Agency_Name` columns and 16-bit signed integers for the `Complaint_Type` column, allowing for a very small memory footprint for such columns.
+
+The approach is like that of using integer data values for, say, a demographic variable and a separate "data dictionary" explaining what the codes represent.
+However, this "DictEncoding" automates the correspondence between codes and values.
+This seemingly trivial data reduction can result in considerable reduction in memory use.
+
+For example, reading this table into Julia, the size of the `Agency_Name` column in the dictionary representation is about 0.25 MB but its size as a vector of character strings is over 12 MB.
+
+Arrow IPC files can have compression applied to the contents internally to further save on space.
+We will use `zstd` compression when saving the entire data table as an Arrow IPC file.
+
+```{julia}
+arrownm = string(first(splitext(csvnm)), ".arrow")
+Arrow.write(arrownm, df; compress=:zstd)
+filesize(arrownm) / 10^6  # size of pruned, compressed Arrow IPC file in MB
+```
+
+Note the remarkable reduction in the size of this compressed Arrow file (less than 18 MB) compared to the original CSV file (over 156 MB).
+
+## Accessing the data from different environments
+
+Suppose we wish to create a table of the number of service requests by `Agency`, in decreasing order.
+
+### Using base R or the tidyverse
+
+In R we could use
+
+```{julia}
+R"""                            # execute a block of R code from Julia
+df <- arrow::read_ipc_file($arrownm)  # pass arrownm from Julia to R
+sort(table(df$Agency), decreasing=TRUE)
+"""
+```
+
+An alternative, using the `dplyr` package in the [tidyverse](https://tidyverse.org), is
+
+```{julia}
+R"dplyr::count(df, Agency, sort=TRUE)"
+```
+
+### Using Julia
+
+A similar computation in Julia, first redefining `df` as a `DataFrame` derived from the Arrow file,
+
+```{julia}
+df = DataFrame(Arrow.Table(arrownm))
+sort(combine(groupby(df, :Agency), nrow => :count), :count; rev=true)
+```
+
+### Using Polars in Python
+
+```{julia}
+pl = pyimport("polars") # Julia PyCall equivalent of `import polars as pl`
+pldf = pl.read_ipc(arrownm, use_pyarrow=true)
+pldf.groupby("Agency").
+    agg([pl.col("Agency").count().alias("count")]).
+    sort("count", descending=true)
+```
+

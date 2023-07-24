@@ -2,9 +2,9 @@
 title: "Creating an Arrow IPC file from the NYC 311 data"
 author: 
   - name: Jun Yan
-    affiliation: University of Connecticut
+    organization: University of Connecticut
   - name: Douglas Bates
-    affiliation: University of Wisconsin - Madison
+    organization: University of Wisconsin - Madison
 jupyter: julia-1.9
 execute:
   cache: true
