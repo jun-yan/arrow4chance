@@ -73,7 +73,7 @@ First, attach the packages to be used, assign the name of the CSV file, and chec
 
 ```{julia}
 using Arrow, CSV, DataFrames, PyCall, RCall
-csvnm = joinpath("data", "311_Service_Requests_2023_03.csv")
+csvnm = joinpath("data", "311_Service_Requests_2023_03.csv.gz")
 filesize(csvnm) / 10^6     # size of CSV file in MB
 ```
 

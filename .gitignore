@@ -9,7 +9,6 @@ Manifest.toml
 .quarto/
 _freeze/
 .jupyter_cache/
-data/
 nyc311clean_files/
 csv2arrow_files/
 /.quarto/
