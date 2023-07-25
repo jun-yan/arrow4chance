@@ -159,7 +159,7 @@ Arrow IPC files can have compression applied to the contents internally to furth
 We will use `zstd` compression when saving the entire data table as an Arrow IPC file.
 
 ```{julia}
-arrownm = string(first(splitext(csvnm)), ".arrow")
+arrownm = "311_Service_Requests_2023_03.arrow"
 Arrow.write(arrownm, df; compress=:zstd)
 filesize(arrownm) / 10^6  # size of pruned, compressed Arrow IPC file in MB
 ```
