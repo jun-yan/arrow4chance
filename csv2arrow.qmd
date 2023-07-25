@@ -181,7 +181,7 @@ sort(table(df$Agency), decreasing=TRUE)
 """
 ```
 
-An alternative, using the `dplyr` package in the [tidyverse](https://tidyverse.org), is
+An alternative, using the `dplyr` package in the [tidyverse](https://tidyverse.org) [@Wickham2023], is
 
 ```{julia}
 R"dplyr::count(df, Agency, sort=TRUE)"
@@ -223,7 +223,6 @@ Title:
 
 :   Brief description. (file type)
 
-
 R-package for  MYNEW routine: 
 
 :   R-package MYNEW containing code to perform the diagnostic methods described in the article. The package also contains all datasets used as examples in the article. (GNU zipped tar file)
@@ -231,4 +230,3 @@ R-package for  MYNEW routine:
 HIV data set:
 
 :   Data set used in the illustration of MYNEW method in @sec-intro (.txt file).
-

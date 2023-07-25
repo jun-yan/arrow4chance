@@ -4,6 +4,7 @@ Manifest.toml
 .DS_Store
 *.pdf
 *.html
+*.tex
 
 .quarto/
 _freeze/
