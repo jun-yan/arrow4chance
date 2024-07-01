@@ -1,0 +1,80 @@
+Instructions for authors
+
+Thank you for choosing to submit your paper to us. These instructions will ensure we have everything required so your paper can move through peer review, production and publication smoothly. Please take the time to read and follow them as closely as possible, as doing so will ensure your paper matches the journal’s requirements.
+
+Author Services
+For general guidance on every stage of the publication process, please visit our Author Services website.
+
+Editing Services
+For editing support, including translation and language polishing, explore our Editing Services website
+
+ScholarOne Manuscripts
+This journal uses ScholarOne Manuscripts (previously Manuscript Central) to peer review manuscript submissions. Please read the guide for ScholarOne authors before making a submission. Complete guidelines for preparing and submitting your manuscript to this journal are provided below.
+
+
+Please note that CHANCE uses CrossCheck™ software to screen papers for unoriginal material. By submitting your paper to CHANCE you areagreeing to any necessary originality checks your paper may have to undergo during the peer review and production processes.
+
+CHANCE is co-published quarterly by the American Statistical Association and Taylor & Francis. The magazine is designed for anyone who has an interest in the analysis of data, informally highlighting sound statistical practice. CHANCE is not a technical magazine, but rather a cultural record of an evolving field, intended to entertain as well as inform.
+
+Hints For Authors
+
+CHANCEarticles do not have abstracts. Jump right into the lead.
+
+Replace technical discussions of statistical procedures by intuitive explanations. If a particular statistical technique is crucial to the article (e.g., logistic regression, Bayesian modeling), then it should be described in a sidebar.
+
+It is a goal to have as few formulas and as little technical notation as possible. As a rule, there should be no more than five formulas in an article, though you should strive for zero or one.
+
+References to the literature should not appear scattered throughout the text as they would in a journal article. Ordinarily, only extremely noteworthy references should appear in the body of the article, and then they should be incorporated into the text (e.g., One of the earliest research papers applying probability and statistics to sports is Fred Mosteller’s 1952 work on the World Series in the Journal of the American Statistical Association).
+
+At the end of the article, under the heading Additional Reading, a limited number of references or related works can be given. This list should contain approximately five items.
+
+Acknowledgements are discouraged.
+
+Since its creation in 1988, CHANCE has covered such topics as the 1990 census adjustment and the redesigned population survey, sports, the environment, DNA evidence in the courts, a variety of medical issues—even how to win on "Jeopardy." CHANCE offers a unique opportunity to reach beyond statistics professionals to a more general audience.
+
+While we invite authors to submit articles in ready-to-publish form, we also encourage prospective authors to submit ideas for articles or articles that are not yet in final form, and we will try to help with their development.
+
+Writing for CHANCE
+
+We prefer short manuscripts of 10 to 15 double-spaced typewritten pages. Authors are encouraged to write in a relaxed, expository style; opinion, humor, and historical comments can (and should) be intermingled to make lively reading. Additional suggestions regarding writing for CHANCE are offered under Hints for Authors.
+
+CHANCE Style
+
+Details for listing and citing references are given in the ASA Magazine Style Guide (PDF). Please do not use footnotes.
+
+Figures, Artwork, and Tables
+
+Figures and tables should be numbered, consecutively titled, labeled, and referred to in the article text. We require every author to receive permission from the holder of the rights for all material.
+
+We accept TIF, EPS, JPEG, and PDF files. Please make sure the material is at least 300 dpi (dots per inch) or as large as 8.5 x 11 at 150 dpi.
+
+File Formats for Graphics Preparation
+
+(EPS) Encapsulated PostScript
+This is the most preferred file format for printed graphs and illustrations. PostScript is a page description language developed by Adobe. Because it encodes vector artwork as a series of mathematic descriptions, the format allows text to be resized without lowering the resolution. This a useful format for line art, graphs, box plots, scatterplots, and combination figures. File suffix .eps.
+
+(PDF) Portable Document Format
+Like a PostScript file, a PDF is able to store both vector and bitmap data. This format can be used for encoding individual images. If a graph or other line art is stored in this format, it should be saved at a very high resolution: 1200 dpi. File suffix .pdf
+
+(TIF) Tagged Image Format
+This is the preferred file format for photographs or continuous tone images. If line art is saved as a TIF, it must be saved at a high resolution (800-1,200 dots per inch). File suffix .tif
+
+(JPEG) Joint Photographers Experimental Group
+A type of compressed file suited for storing photographs. Because this file format discards some of the data in an image, it can transform the art and give it a blocky appearance and blur sharp edges and text. If the photograph is particularly large (i.e, 24 x 24) and 72 dpi, a production designer can simulate the pixils by shrinking the photograph by 70% and increasing the dpi to 300. Consequently, this file format should not be used for print, but is suited to the web. File suffix .jpg/.jpe/.jpeg
+Graphics should not be saved in the following formats:
+
+(BMP) Windows Bitmap
+This file is poorly supported by other operating systems and has limited support for color. It should be avoided for print and web.
+
+(WMF) Windows metafile
+A Microsoft Windows format, usually used for interchange of an image between Windows software.
+
+Compuserve (GIF) Graphical interchange format
+A compressed file format. This type of compression is only useful for images with flat/solid areas
+of color. It is a useful format for the web, but with limited contrast and resolution size, it should not be used for print.
+
+PICT (short for "pict"ure)
+Useful only for previewing art on the computer.
+Reprints
+
+Authors for whom we receive a valid email address will be provided an opportunity to purchase reprints of individual articles, or copies of the complete print issue. These authors will also be given complimentary access to their final article on Taylor & Francis Online.
