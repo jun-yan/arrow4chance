@@ -19,7 +19,7 @@ author:
     affiliations:
       - name: University of Wisconsin - Madison
         department: Department of Statistics
-jupyter: julia-1.9
+jupyter: julia-1.10
 abstract: |
   We show conversion of a CSV file containing data on 311 service requests in New York City during March, 2023 to the [Arrow](https://arrow.apache.org) IPC (Inter-Process Communication) file format.
   The purpose is to create a canonical version of the data that can be used as a starting point for analysis in many different environments including R, Python and Julia.
