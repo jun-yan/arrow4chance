@@ -17,7 +17,11 @@ author:
     affiliations:
       - name: University of Connecticut
         department: Department of Statistics
-jupyter: julia-1.10
+engine: julia
+julia:
+  exeflags: 
+    - --project
+    - --threads=auto
 keywords:
   - Arrow IPC format
   - CSV files
@@ -299,6 +303,7 @@ A similar computation in Julia, first redefining `df` as a `DataFrame` derived f
 df = DataFrame(Arrow.Table(arrownm))
 sort(combine(groupby(df, :Agency), nrow => :count), :count; rev=true)
 ```
+
 Interestingly, agency `DEPARTMENT OF CONSUMER AND WORKER PROTECTION`
 and `DCWP` should have been merged in the original data.
 
@@ -307,22 +312,20 @@ and `DCWP` should have been merged in the original data.
 
 R could be accessed from within Julia via `RCall`.
 
-```{julia}
+```{r}
 #| eval: false
 
-R"""                            # execute a block of R code from Julia
 df <- arrow::read_ipc_file($arrownm)  # pass arrownm from Julia to R
 sort(table(df$Agency), decreasing=TRUE)
-"""
 ```
 
 An alternative, one can use the `dplyr` package in the
 [tidyverse](https://tidyverse.org) [@Wickham2023].
 
-```{julia}
+```{r}
 #| eval: false
 
-R"dplyr::count(df, Agency, sort=TRUE)"
+dplyr::count(df, Agency, sort=TRUE)
 ```
 
 
@@ -331,8 +334,6 @@ R"dplyr::count(df, Agency, sort=TRUE)"
 Similarly, Python could be accessed from within Julia via `PyCall`.
 
 ```{julia}
-#| eval: false
-
 pl = pyimport("polars") # Julia PyCall equivalent of `import polars as pl`
 pldf = pl.read_ipc(arrownm, use_pyarrow=true)
 pldf.groupby("Agency").
