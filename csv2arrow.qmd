@@ -129,9 +129,9 @@ To illustrate conversion of a CSV file to Arrow IPC we use data
 on service requests to the 311 city government line (like the
 911-emergency contact number but for non-emergency requests), 
 in New York City during May, 2023.
-The data were downloaded on July 25, 2023, from 
-[NYC 311 Open Data Portal](https://data.cityofnewyork.us/Social-Services/NYC-311-Data/jrb2-thup),
-which is in CSV format.
+The dataset was downloaded on July 25, 2023 from 
+[NYC 311 Open Data Portal](https://data.cityofnewyork.us/Social-Services/NYC-311-Data/jrb2-thup)
+in CSV format.
 
 
 ## Reading the CSV file as a DataFrame {#sec-reading}
@@ -214,7 +214,7 @@ For illustration we create an Arrow IPC file of the first 6 columns.
 ```{julia}
 #| output: false
 first6nm = Arrow.write(  # returns the name of the file
-    joinpath("data", "311_requests_2023_03_first6.arrow"),
+    joinpath("data", "311_requests_2023_05_first6.arrow"),
     df[:, 1:6],          # `:` as the first index indicates all rows
 )
 ```
@@ -279,7 +279,7 @@ internally to further save on space. We will use `zstd` compression
 when saving the entire data table as an Arrow IPC file.
 
 ```{julia}
-arrownm = "311_Service_Requests_2023_03.arrow"
+arrownm = "311_Service_Requests_2023_05.arrow"
 Arrow.write(arrownm, df; compress=:zstd)
 filesize(arrownm) / 10^6  # size of pruned, compressed Arrow IPC file in MB
 ```
@@ -297,7 +297,8 @@ requests by `Agency`, in decreasing order.
 
 ### Using Julia
 
-A similar computation in Julia, first redefining `df` as a `DataFrame` derived from the Arrow file,
+In Julia, redefining `df` as a `DataFrame` derived from the Arrow file
+and sort the frequency by `Agency`:
 
 ```{julia}
 df = DataFrame(Arrow.Table(arrownm))
