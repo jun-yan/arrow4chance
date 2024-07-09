@@ -337,7 +337,7 @@ Similarly, Python could be accessed from within Julia via `PyCall`.
 ```{julia}
 pl = pyimport("polars") # Julia PyCall equivalent of `import polars as pl`
 pldf = pl.read_ipc(arrownm, use_pyarrow=true)
-pldf.groupby("Agency").
+pldf.group_by("Agency").
     agg([pl.col("Agency").count().alias("count")]).
     sort("count", descending=true)
 ```
