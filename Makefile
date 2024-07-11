@@ -1,5 +1,8 @@
-nyc311clean.html: nyc311clean.qmd
-	quarto render
+csv2arrow.pdf: csv2arrow.qmd
+	quarto render csv2arrow.qmd --to jasa-pdf
+
+csv2arrow.html: csv2arrow.qmd
+	quarto render csv2arrow.qmd --to jasa-html
 
 clean:
-	rm -f nyc311clean.html
+	rm -f csv2arrow.html csv2arrow.pdf
