@@ -5,7 +5,8 @@ format:
     keep-tex: true
     journal:
       blinded: false
-  jasa-html: default
+  jasa-html:
+    embed-resources: true
 date: last-modified
 
 author: 
@@ -33,7 +34,8 @@ bibliography: bibliography.bib
 ---
 
 Handling open data, like the vast repository of New York City (NYC)
-311 service requests, often starts with the ubiquitous CSV file
+311 service requests, often starts with the ubiquitous
+CSV (comma-separated value) file
 format. However, CSV files are notoriously inefficient for curation,
 bogged down by redundancy and potential misinterpretations. Enter
 Apache [Arrow](https://arrow.apache.org), a game-changing approach
@@ -54,7 +56,7 @@ popular environments such as R and Python.
 ## Introduction {#sec-intro}
 
 A common starting point for a data science project is one or more
-data tables, often provided as CSV (comma-separated value) files.
+data tables, often provided as CSV files.
 For our purposes a "data table" is a structure like a `dataframe`
 in [R](https://www.r-project.org), which is a named, ordered
 collection of columns, each of which is homogeneous (all elements
@@ -74,8 +76,6 @@ Furthermore, it is often important that a column can represent a
 The CSV format (and related formats like TSV - tab-separated values)
 for data tables is ubiquitous, convenient, and can be read or written
 by many different data analysis environments, including spreadsheets.
-
-
 An advantage of the textual representation of the data in a CSV file 
 is that the entire data table, or portions of it, can be previewed
 in a text editor. However, the textual representation can be ambiguous
@@ -86,13 +86,13 @@ before these inferences can be made.
 
 
 When the data in a particular file come from many different sources,
-as is the case for the "311 Service Requests in New York City" data
-that we will use for illustration, those entering the data seem to be
-particularly creative in choosing representations of missing data, 
-time-date formats, etc. Experienced data scientists are aware that
+as is the case for the NYC 311 Service Requests open data
+that we will use for illustration, the diversity in representations
+of missing data and date-time formats can be quite varied.
+Experienced data scientists are aware that
 a substantial part of an analysis or report generation is often
 the "data cleaning" involved in preparing the data for analysis. This
-can be an open-ended task --- it required several trial-and-error
+can be an open-ended task --- it required numerous trial-and-error
 iterations to create the list of different missing data
 representations we use for the sample CSV file and even now we are
 not sure we have them all.
@@ -105,11 +105,10 @@ contents, possibly into different language frameworks, such as
 or [Julia](https://julialang.org) [@Bezanson_Julia_A_fresh_2017].
 
 
-
 Apache Arrow is an innovative, cross-language development platform
 designed for in-memory data. It defines a standard for representing
 columnar data, enabling efficient analytics and real-time data
-processing. Arrow IPC (Inter-Process Communication) is a specific
+processing. Arrow IPC is a specific
 implementation of this standard, allowing data to be shared across
 different computing environments without the need for serialization
 or deserialization. By storing data in a binary format with a
@@ -207,7 +206,7 @@ earliest `Created_Date`.
 <!-- Also, there are 15 unique Agency acronyms but only 14 unique Agency_Names.
  -->
 
-## Creating a Arrow IPC file
+## Creating an Arrow IPC file
 
 For illustration we create an Arrow IPC file of the first 6 columns.
 
@@ -285,7 +284,7 @@ filesize(arrownm) / 10^6  # size of pruned, compressed Arrow IPC file in MB
 ```
 
 Note the remarkable reduction in the size of this compressed
-Arrow file (less than 18 MB) compared to the original CSV file
+Arrow file (less than 24 MB) compared to the original CSV file
 (over 156 MB). This reduction could be important for open data
 agencies and their data users in storage and network transfer.
 
@@ -335,6 +334,8 @@ dplyr::count(df, Agency, sort=TRUE)
 Similarly, Python could be accessed from within Julia via `PyCall`.
 
 ```{julia}
+#| eval: false
+
 pl = pyimport("polars") # Julia PyCall equivalent of `import polars as pl`
 pldf = pl.read_ipc(arrownm, use_pyarrow=true)
 pldf.group_by("Agency").
@@ -371,7 +372,7 @@ packages for performance optimization, Julia's core language features
 are optimized for speed, making it a superior choice for intensive
 computational tasks. Additionally, Julia's syntax is intuitive and
 easy to learn, similar to Python, but it also provides powerful tools
-for metaprogramming and multiple dispatch, which enable more flexible
+for meta-programming and multiple dispatch, which enable more flexible
 and dynamic code. The ability to call functions from R and Python
 seamlessly within Julia further enhances its versatility, making it
 an excellent choice for data scientists who require both performance
@@ -388,8 +389,8 @@ HTML output:
 
 :   HTML output generated from rending the quarto source (.html file) with full output.
 
-NYC 311 service request data for May, 2023
+NYC 311 service request data for May, 2023 as downloaded on July 25, 2023.
 
-:   Data set used in the illustration of tro (.csv file).
+:   Data set used in the illustration (.csv file).
 
 ## Further Reading {-}
