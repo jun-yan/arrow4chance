@@ -311,20 +311,13 @@ and `DCWP` should have been merged in the original data.
 ### Using base R or the tidyverse
 
 R could be accessed from within Julia via `RCall`.
-
-```{r}
-#| eval: false
-
-df <- arrow::read_ipc_file($arrownm)  # pass arrownm from Julia to R
-sort(table(df$Agency), decreasing=TRUE)
-```
-
-An alternative, one can use the `dplyr` package in the
+We can use R `dplyr` package in the
 [tidyverse](https://tidyverse.org) [@Wickham2023].
 
 ```{r}
 #| eval: false
 
+df <- arrow::read_ipc_file($arrownm)  # pass arrownm from Julia to R
 dplyr::count(df, Agency, sort=TRUE)
 ```
 
@@ -332,6 +325,7 @@ dplyr::count(df, Agency, sort=TRUE)
 ### Using Polars in Python
 
 Similarly, Python could be accessed from within Julia via `PyCall`.
+We import the Arrow data with Python package `polars`.
 
 ```{julia}
 #| eval: false
@@ -381,16 +375,15 @@ and ease of use.
 
 ## Supplementary Material {.supplementary}
 
-Quarto source of this manuscript:
-
-:   Brief description. (.qmd file)
-
 HTML output:
 
-:   HTML output generated from rending the quarto source (.html file) with full output.
+:   HTML output including the full output from running R and Python code
+in Julia, generated from rending the quarto source (.html file).
 
-NYC 311 service request data for May, 2023 as downloaded on July 25, 2023.
+Code and data:
 
-:   Data set used in the illustration (.csv file).
+:   The Quarto source and the NYC Service Request dataset are available in a
+public GitHub repository:
+<https://github.com/jun-yan/arrow4chance>.
 
 ## Further Reading {-}
