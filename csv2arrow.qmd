@@ -1,5 +1,5 @@
 ---
-title: "From CSV to Arrow: Creating a unified data set for efficient crossplotform analysis"
+title: "From CSV to Arrow: Creating a unified data set for efficient cross-platform analysis"
 format:
   jasa-pdf:
     keep-tex: true
@@ -70,7 +70,7 @@ assumes one of a limited number of choices, typically represented
 as character strings. For example, each element of a column named
 `Sex` may be restricted to one of `Female`, `Male`, or `Non-binary`.
 Furthermore, it is often important that a column can represent a
-"missing data value, as we will see in our example below.
+"missing data" value, as we will see in our example below.
 
 
 The CSV format (and related formats like TSV - tab-separated values)
@@ -130,13 +130,14 @@ on service requests to the 311 city government line (like the
 in New York City during May, 2023.
 The dataset was downloaded on July 25, 2023 from 
 [NYC 311 Open Data Portal](https://data.cityofnewyork.us/Social-Services/NYC-311-Data/jrb2-thup)
-in CSV format.
-
+in CSV format, which is about 171 MB. We compressed it with
+GNU Zip, which reduces the file size to about 33 MB.
+Our demonstration in the sequel is in Julia.
 
 ## Reading the CSV file as a DataFrame {#sec-reading}
 
-First, attach the packages to be used, assign the name of the CSV
-file, and check its size in MB.
+First, attach the packages to be used, assign the name of the 
+compressed CSV file, and check its size in MB.
 
 ```{julia}
 using Arrow, CSV, DataFrames, PyCall, RCall
@@ -246,12 +247,17 @@ that can (and does) contain missing values.
 
 
 The next three columns are stored as `dictionary` types, which
-are like the `factor` type in R or the `categorical` type in 
-[Polars](https://pola.rs). The elements of these columns are 
+are like the `factor` type in R. It is also like the `categorical`
+type in [Polars](https://pola.rs), a fast DataFrame implementation
+for structured data available as packages for R, Python, and Julia.
+The elements of these columns are 
 character strings but with considerable repetition of values.
-Instead of storing a separate string for each row in these
-columns the unique values are stored in a "dictionary" and the
-value for each row is determined from an index into the dictionary.
+Rather than storing a separate string for each row in these
+columns, unique values are stored in a "dictionary," and each
+row's value is represented by an index pointing to the
+corresponding entry in the dictionary. This approach
+significantly reduces storage requirements, as the indices
+require far less space than the full strings.
 (The Arrow specification requires these to be 0-based indices.)
 If the size of the dictionary is small, the indices can be small
 integer types; 8-bit signed integers for the `Agency` and
@@ -284,8 +290,10 @@ filesize(arrownm) / 10^6  # size of pruned, compressed Arrow IPC file in MB
 ```
 
 Note the remarkable reduction in the size of this compressed
-Arrow file (less than 24 MB) compared to the original CSV file
-(over 156 MB). This reduction could be important for open data
+Arrow file (less than 24 MB) compared to the originally
+downloaded CSV file (over 171 MB); it is even 25% smaller
+than the compressed version (32 MB).
+This reduction could be important for open data
 agencies and their data users in storage and network transfer.
 
 
@@ -311,7 +319,9 @@ and `DCWP` should have been merged in the original data.
 ### Using base R or the tidyverse
 
 R could be accessed from within Julia via `RCall`.
-We can use R `dplyr` package in the
+Reading the IPC Arrow file needs R package `arrow`
+installed. To get the frequency by agency,
+we can use R `dplyr` package in the
 [tidyverse](https://tidyverse.org) [@Wickham2023].
 
 ```{r}
@@ -325,7 +335,8 @@ dplyr::count(df, Agency, sort=TRUE)
 ### Using Polars in Python
 
 Similarly, Python could be accessed from within Julia via `PyCall`.
-We import the Arrow data with Python package `polars`.
+We import the Arrow data with Python package `polars`, the Python
+interface to Polars.
 
 ```{julia}
 #| eval: false
@@ -375,15 +386,18 @@ and ease of use.
 
 ## Supplementary Material {.supplementary}
 
-HTML output:
-
-:   HTML output including the full output from running R and Python code
-in Julia, generated from rending the quarto source (.html file).
-
 Code and data:
 
-:   The Quarto source and the NYC Service Request dataset are available in a
+:   The Quarto source of this article and
+the NYC Service Request dataset are available in a
 public GitHub repository:
 <https://github.com/jun-yan/arrow4chance>.
+
+HTML output:
+
+:   HTML output including the full output from running R and
+Python code in Julia, generated from rending the Quarto source
+of the article (.html file).
+
 
 ## Further Reading {-}

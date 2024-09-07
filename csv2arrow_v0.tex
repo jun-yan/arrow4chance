@@ -1,0 +1,634 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  12pt]{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\addtolength{\oddsidemargin}{-.5in}%
+\addtolength{\evensidemargin}{-1in}%
+\addtolength{\textwidth}{1in}%
+\addtolength{\textheight}{1.7in}%
+\addtolength{\topmargin}{-1in}%
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage[]{natbib}
+\bibliographystyle{agsm}
+\usepackage{bookmark}
+
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={From CSV to Arrow: Creating a unified data set for efficient crossplotform analysis},
+  pdfauthor={Douglas Bates; Jun Yan},
+  pdfkeywords={Arrow IPC format, CSV files, data cleaning},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+
+\begin{document}
+
+
+\def\spacingset#1{\renewcommand{\baselinestretch}%
+{#1}\small\normalsize} \spacingset{1}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\date{July 13, 2024}
+\title{\bf From CSV to Arrow: Creating a unified data set for efficient
+crossplotform analysis}
+\author{
+Douglas Bates\\
+Department of Statistics, University of Wisconsin - Madison\\
+and\\Jun Yan\\
+Department of Statistics, University of Connecticut\\
+}
+\maketitle
+
+\bigskip
+\bigskip
+\begin{abstract}
+
+\end{abstract}
+
+\noindent%
+{\it Keywords:} Arrow IPC format, CSV files, data cleaning
+\vfill
+
+\newpage
+\spacingset{1.9} % DON'T change the spacing!
+
+
+Handling open data, like the vast repository of New York City (NYC) 311
+service requests, often starts with the ubiquitous CSV (comma-separated
+value) file format. However, CSV files are notoriously inefficient for
+curation, bogged down by redundancy and potential misinterpretations.
+Enter Apache \href{https://arrow.apache.org}{Arrow}, a game-changing
+approach that not only slashes storage requirements but also primes data
+for seamless analysis across popular platforms like R, Python, and
+Julia. Using the NYC 311 service request data, we demonstrate the
+conversion of a CSV file to the Arrow IPC (Inter-Process Communication)
+format. An Arrow file stores the table schema with the data in a binary
+format that can be memory-mapped for reading, enabling instantaneous
+access to potentially large datasets. The Arrow IPC data serves as a
+universal starting point for analysis across various environments. In
+our example, this conversion is done in
+\href{https://julialang.org}{Julia}, which has powerful packages for
+reading and writing CSV or Arrow files and calling functions in other
+popular environments such as R and Python.
+
+\section{Introduction}\label{sec-intro}
+
+A common starting point for a data science project is one or more data
+tables, often provided as CSV files. For our purposes a ``data table''
+is a structure like a \texttt{dataframe} in
+\href{https://www.r-project.org}{R}, which is a named, ordered
+collection of columns, each of which is homogeneous (all elements of the
+column have the same type and internal representation) and all of which
+have the same length. The columns can contain numeric values --- such as
+Boolean, integer or floating point numbers --- or character strings or
+other data types, with the above restriction that each column must be
+homogeneous. Another common data type is a \texttt{factor} or
+\texttt{categorical} representation where each data value assumes one of
+a limited number of choices, typically represented as character strings.
+For example, each element of a column named \texttt{Sex} may be
+restricted to one of \texttt{Female}, \texttt{Male}, or
+\texttt{Non-binary}. Furthermore, it is often important that a column
+can represent a ``missing data value, as we will see in our example
+below.
+
+The CSV format (and related formats like TSV - tab-separated values) for
+data tables is ubiquitous, convenient, and can be read or written by
+many different data analysis environments, including spreadsheets. An
+advantage of the textual representation of the data in a CSV file is
+that the entire data table, or portions of it, can be previewed in a
+text editor. However, the textual representation can be ambiguous and
+inconsistent. The format of a particular column: Boolean, integer,
+floating-point, text, factor, etc. must be inferred from text
+representation, often at the expense of reading the entire file before
+these inferences can be made.
+
+When the data in a particular file come from many different sources, as
+is the case for the NYC 311 Service Requests open data that we will use
+for illustration, the diversity in representations of missing data and
+date-time formats can be quite varied. Experienced data scientists are
+aware that a substantial part of an analysis or report generation is
+often the ``data cleaning'' involved in preparing the data for analysis.
+This can be an open-ended task --- it required numerous trial-and-error
+iterations to create the list of different missing data representations
+we use for the sample CSV file and even now we are not sure we have them
+all.
+
+Thus, the ease of creating and distributing a CSV file must be balanced
+against the difficulty and uncertainty of reading its contents, possibly
+into different language frameworks, such as
+\href{https://www.R-project.org}{R}, \href{https://python.org}{Python},
+or \href{https://julialang.org}{Julia}
+\citep{Bezanson_Julia_A_fresh_2017}.
+
+Apache Arrow is an innovative, cross-language development platform
+designed for in-memory data. It defines a standard for representing
+columnar data, enabling efficient analytics and real-time data
+processing. Arrow IPC is a specific implementation of this standard,
+allowing data to be shared across different computing environments
+without the need for serialization or deserialization. By storing data
+in a binary format with a well-defined schema, Arrow IPC facilitates
+instantaneous reading and manipulation of large datasets, making it a
+powerful tool for modern data analysis. Whether you are working in R,
+Python, or Julia, the \href{https://arrow.apache.org}{Arrow} data format
+and its IPC file format provide an unambigous data representation that
+can be read quickly and easily in many different languages used by data
+scientists. There is provision for storing metadata about the table as a
+whole and about individual columns within the Arrow IPC file. Finally,
+the size of the Arrow IPC file is often much, much smaller than the
+original CSV file.
+
+To illustrate conversion of a CSV file to Arrow IPC we use data on
+service requests to the 311 city government line (like the 911-emergency
+contact number but for non-emergency requests), in New York City during
+May, 2023. The dataset was downloaded on July 25, 2023 from
+\href{https://data.cityofnewyork.us/Social-Services/NYC-311-Data/jrb2-thup}{NYC
+311 Open Data Portal} in CSV format.
+
+\section{Reading the CSV file as a DataFrame}\label{sec-reading}
+
+First, attach the packages to be used, assign the name of the CSV file,
+and check its size in MB.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{using} \BuiltInTok{Arrow}\NormalTok{, }\BuiltInTok{CSV}\NormalTok{, }\BuiltInTok{DataFrames}\NormalTok{, }\BuiltInTok{PyCall}\NormalTok{, }\BuiltInTok{RCall}
+\NormalTok{csvnm }\OperatorTok{=} \FunctionTok{joinpath}\NormalTok{(}\StringTok{"data"}\NormalTok{, }\StringTok{"311\_Service\_Requests\_2023\_05\_on\_20230725.csv.gz"}\NormalTok{)}
+\FunctionTok{filesize}\NormalTok{(csvnm) }\OperatorTok{/} \FloatTok{10}\OperatorTok{\^{}}\FloatTok{6}     \CommentTok{\# size of CSV file in MB}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+32.878527
+\end{verbatim}
+
+A visual inspection of the first few lines in the file showed the format
+in which date-times were expressed (which, fortunately, was consistent
+within the file) and the fact that there are embedded blanks in many of
+the column names. There are also a variety of different missing value
+indicators used in this file. The list of missing value indicators in
+the call to \texttt{CSV.read} shown below was created by a tedious
+process of trial and error, which was earlier demonstrated at the
+\href{https://asa-ssc.github.io/minisymp2022/}{2022 Statistical
+Computing in Action Mini-Symposium} by the Section on Statistical
+Computing of the ASA.
+
+Two of the columns, \texttt{Latitude} and \texttt{Longitude}, are
+expressed as floating point numbers, which we store as 32-bit floats,
+the \texttt{Float32} type in Julia, that provides sufficient precision
+for the accuracy to which latitude and longitude can be determined by
+GPS. Furthermore we determined that, in the CSV file, the
+\texttt{Location} column is a combination of the character strings in
+the \texttt{Latitude} and \texttt{Longitude} columns and can be dropped
+without loss of information.
+
+Read the CSV file as a \texttt{DataFrame} and check the number of rows
+and columns of this dataframe.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OperatorTok{=}\NormalTok{ CSV.}\FunctionTok{read}\NormalTok{(}
+\NormalTok{    csvnm,                }\CommentTok{\# file name}
+\NormalTok{    DataFrame,            }\CommentTok{\# output table type}
+\NormalTok{    normalizenames}\OperatorTok{=}\ConstantTok{true}\NormalTok{,  }\CommentTok{\# convert col names to valid symbols}
+\NormalTok{    missingstring}\OperatorTok{=}\NormalTok{[       }\CommentTok{\# strings that indicate missing values}
+        \StringTok{""}\NormalTok{,}
+        \StringTok{"0 Unspecified"}\NormalTok{,}
+        \StringTok{"N/A"}\NormalTok{,}
+        \StringTok{"na"}\NormalTok{,}
+        \StringTok{"na na"}\NormalTok{,}
+        \StringTok{"Unspecified"}\NormalTok{,}
+        \StringTok{"UNKNOWN"}\NormalTok{,}
+\NormalTok{    ],}
+\NormalTok{    dateformat}\OperatorTok{=}\StringTok{"m/d/Y I:M:S p"}\NormalTok{,}
+\NormalTok{    downcast}\OperatorTok{=}\ConstantTok{true}\NormalTok{,        }\CommentTok{\# use smallest possible Int types }
+\NormalTok{    stripwhitespace}\OperatorTok{=}\ConstantTok{true}\NormalTok{, }\CommentTok{\# strip leading and trailing whitespace}
+\NormalTok{    types}\OperatorTok{=}\FunctionTok{Dict}\NormalTok{(}\OperatorTok{:}\NormalTok{Latitude }\OperatorTok{=\textgreater{}} \DataTypeTok{Float32}\NormalTok{, }\OperatorTok{:}\NormalTok{Longitude }\OperatorTok{=\textgreater{}} \DataTypeTok{Float32}\NormalTok{),}
+\NormalTok{    drop}\OperatorTok{=}\NormalTok{[}\OperatorTok{:}\NormalTok{Location],     }\CommentTok{\# Latitude and Longitude are sufficient}
+\NormalTok{)}
+\FunctionTok{size}\NormalTok{(df)                  }\CommentTok{\# number of rows/columns in df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+(281054, 45)
+\end{verbatim}
+
+A brief description of the columns can be obtained as follows. For
+illustration, we only show the first 6 columns.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{first}\NormalTok{(}\FunctionTok{describe}\NormalTok{(df, }\OperatorTok{:}\NormalTok{eltype, }\OperatorTok{:}\NormalTok{nmissing, }\OperatorTok{:}\NormalTok{nunique, }\OperatorTok{:}\NormalTok{min), }\FloatTok{6}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tabular}{r|ccccc}
+    & variable & eltype & nmissing & nunique & min\\
+    \hline
+    & Symbol & Type & Int64 & Union… & Any\\
+    \hline
+    1 & Unique\_Key & Int32 & 0 &  & 57459415 \\
+    2 & Created\_Date & DateTime & 0 & 233811 & 2023-05-01T00:00:00 \\
+    3 & Closed\_Date & Union\{Missing, DateTime\} & 17903 & 205357 & 2023-04-28T11:52:00 \\
+    4 & Agency & String & 0 & 16 & DCA \\
+    5 & Agency\_Name & String & 0 & 16 & Consumer Complaints Division \\
+    6 & Complaint\_Type & String & 0 & 174 & AHV Inspection Unit \\
+\end{tabular}
+
+The description immediately show a problem with the earliest
+\texttt{Closed\_Date} entry, which is a few days before the earliest
+\texttt{Created\_Date}.
+
+\section{Creating an Arrow IPC file}\label{creating-an-arrow-ipc-file}
+
+For illustration we create an Arrow IPC file of the first 6 columns.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{first6nm }\OperatorTok{=}\NormalTok{ Arrow.}\FunctionTok{write}\NormalTok{(  }\CommentTok{\# returns the name of the file}
+    \FunctionTok{joinpath}\NormalTok{(}\StringTok{"data"}\NormalTok{, }\StringTok{"311\_requests\_2023\_05\_first6.arrow"}\NormalTok{),}
+\NormalTok{    df[}\OperatorTok{:}\NormalTok{, }\FloatTok{1}\OperatorTok{:}\FloatTok{6}\NormalTok{],          }\CommentTok{\# \textasciigrave{}:\textasciigrave{} as the first index indicates all rows}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The generated file in Arrow IPC format can be read in using the Python
+\texttt{pyarrow} package, called from within Julia using the
+\texttt{PyCall} package for Julia.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fea }\OperatorTok{=} \FunctionTok{pyimport}\NormalTok{(}\StringTok{"pyarrow.feather"}\NormalTok{)  }\CommentTok{\# like \textasciigrave{}import pyarrow.feather as fea\textasciigrave{}}
+\NormalTok{fea.}\FunctionTok{read\_table}\NormalTok{(first6nm)}
+\end{Highlighting}
+\end{Shaded}
+
+The full output from the \texttt{pyarrow.feather.read\_table()} call is
+suppressed here but available in the Supplementary Material. The output
+consists of two sections by the default print method. The first section
+is a detailed schema, which is a description of each column including
+the column name, the storage mode and whether missing
+(i.e.~\texttt{null}) values are disallowed. The second section shows
+several values from the beginning and from the end of each column.
+
+The schema section shows that the \texttt{Unique\_Key} column consists
+of 32-bit signed integers without missing values; the
+\texttt{Created\_Date} column is a timestamp with millisecond precision
+and without missing values; and the \texttt{Closed\_Date} column is also
+a timestamp that can (and does) contain missing values.
+
+The next three columns are stored as \texttt{dictionary} types, which
+are like the \texttt{factor} type in R or the \texttt{categorical} type
+in \href{https://pola.rs}{Polars}. The elements of these columns are
+character strings but with considerable repetition of values. Instead of
+storing a separate string for each row in these columns the unique
+values are stored in a ``dictionary'' and the value for each row is
+determined from an index into the dictionary. (The Arrow specification
+requires these to be 0-based indices.) If the size of the dictionary is
+small, the indices can be small integer types; 8-bit signed integers for
+the \texttt{Agency} and \texttt{Agency\_Name} columns and 16-bit signed
+integers for the \texttt{Complaint\_Type} column, allowing for a very
+small memory footprint for such columns.
+
+The approach is like that of using integer data values for, say, a
+demographic variable and a separate ``data dictionary'' explaining what
+the codes represent. However, this ``DictEncoding'' automates the
+correspondence between codes and values. This seemingly trivial data
+reduction can result in considerable reduction in memory use.
+
+For example, reading this table into Julia, the size of the
+\texttt{Agency\_Name} column in the dictionary representation is about
+0.25 MB but its size as a vector of character strings is over 12 MB.
+
+Arrow IPC files can have compression applied to the contents internally
+to further save on space. We will use \texttt{zstd} compression when
+saving the entire data table as an Arrow IPC file.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{arrownm }\OperatorTok{=} \StringTok{"311\_Service\_Requests\_2023\_05.arrow"}
+\NormalTok{Arrow.}\FunctionTok{write}\NormalTok{(arrownm, df; compress}\OperatorTok{=:}\NormalTok{zstd)}
+\FunctionTok{filesize}\NormalTok{(arrownm) }\OperatorTok{/} \FloatTok{10}\OperatorTok{\^{}}\FloatTok{6}  \CommentTok{\# size of pruned, compressed Arrow IPC file in MB}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+23.286834
+\end{verbatim}
+
+Note the remarkable reduction in the size of this compressed Arrow file
+(less than 24 MB) compared to the original CSV file (over 156 MB). This
+reduction could be important for open data agencies and their data users
+in storage and network transfer.
+
+\section{Accessing the data from different
+environments}\label{sec-accessing}
+
+Suppose we wish to create a table of the number of service requests by
+\texttt{Agency}, in decreasing order.
+
+\subsection{Using Julia}\label{using-julia}
+
+In Julia, redefining \texttt{df} as a \texttt{DataFrame} derived from
+the Arrow file and sort the frequency by \texttt{Agency}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OperatorTok{=} \FunctionTok{DataFrame}\NormalTok{(Arrow.}\FunctionTok{Table}\NormalTok{(arrownm))}
+\FunctionTok{sort}\NormalTok{(}\FunctionTok{combine}\NormalTok{(}\FunctionTok{groupby}\NormalTok{(df, }\OperatorTok{:}\NormalTok{Agency), nrow }\OperatorTok{=\textgreater{}} \OperatorTok{:}\NormalTok{count), }\OperatorTok{:}\NormalTok{count; rev}\OperatorTok{=}\ConstantTok{true}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tabular}{r|cc}
+    & Agency & count\\
+    \hline
+    & String & Int64\\
+    \hline
+    1 & NYPD & 133681 \\
+    2 & HPD & 40454 \\
+    3 & DSNY & 27033 \\
+    4 & DOT & 16195 \\
+    5 & DPR & 14827 \\
+    6 & DEP & 14730 \\
+    7 & DOB & 9230 \\
+    8 & DOHMH & 7564 \\
+    9 & EDC & 7461 \\
+    10 & DHS & 4338 \\
+    11 & TLC & 3649 \\
+    12 & DCWP & 979 \\
+    13 & DCA & 411 \\
+    14 & DEPARTMENT OF CONSUMER AND WORKER PROTECTION & 361 \\
+    15 & DOE & 125 \\
+    16 & OTI & 16 \\
+\end{tabular}
+
+Interestingly, agency
+\texttt{DEPARTMENT\ OF\ CONSUMER\ AND\ WORKER\ PROTECTION} and
+\texttt{DCWP} should have been merged in the original data.
+
+\subsection{Using base R or the
+tidyverse}\label{using-base-r-or-the-tidyverse}
+
+R could be accessed from within Julia via \texttt{RCall}. We can use R
+\texttt{dplyr} package in the \href{https://tidyverse.org}{tidyverse}
+\citep{Wickham2023}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OperatorTok{\textless{}{-}}\NormalTok{ arrow}\OperatorTok{::}\DataTypeTok{read\_ipc\_file}\NormalTok{(}\OperatorTok{$}\NormalTok{arrownm)  }\CommentTok{\# pass arrownm from Julia to R}
+\NormalTok{dplyr}\OperatorTok{::}\DataTypeTok{count}\NormalTok{(df, Agency, sort}\OperatorTok{=}\NormalTok{TRUE)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Using Polars in Python}\label{using-polars-in-python}
+
+Similarly, Python could be accessed from within Julia via
+\texttt{PyCall}. We import the Arrow data with Python package
+\texttt{polars}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pl }\OperatorTok{=} \FunctionTok{pyimport}\NormalTok{(}\StringTok{"polars"}\NormalTok{) }\CommentTok{\# Julia PyCall equivalent of \textasciigrave{}import polars as pl\textasciigrave{}}
+\NormalTok{pldf }\OperatorTok{=}\NormalTok{ pl.}\FunctionTok{read\_ipc}\NormalTok{(arrownm, use\_pyarrow}\OperatorTok{=}\ConstantTok{true}\NormalTok{)}
+\NormalTok{pldf.}\FunctionTok{group\_by}\NormalTok{(}\StringTok{"Agency"}\NormalTok{).}
+    \FunctionTok{agg}\NormalTok{([pl.}\FunctionTok{col}\NormalTok{(}\StringTok{"Agency"}\NormalTok{).}\FunctionTok{count}\NormalTok{().}\FunctionTok{alias}\NormalTok{(}\StringTok{"count"}\NormalTok{)]).}
+    \FunctionTok{sort}\NormalTok{(}\StringTok{"count"}\NormalTok{, descending}\OperatorTok{=}\ConstantTok{true}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Discussion}\label{discussion}
+
+The primary advantage of Arrow IPC lies in its ability to drastically
+reduce storage sizes and streamline data transfer. Traditional CSV files
+store data in a textual format, resulting in redundant information and
+increased storage requirements. In contrast, Arrow IPC files use a
+binary format with an embedded schema, which eliminates redundancy and
+significantly cuts down on storage space. This efficiency extends to
+data transfer, as the compact size of Arrow IPC files facilitates faster
+transmission over networks. Moreover, the unified binary format of Arrow
+IPC ensures that data can be accessed efficiently across various data
+analytic environments, including R, Python, and Julia, without the need
+for conversion or reformatting. This interoperability not only enhances
+productivity but also simplifies collaborative efforts in data science
+projects.
+
+When comparing Julia with R and Python, several advantages of Julia
+stand out. Julia is designed for high-performance numerical and
+scientific computing, offering speed that is often comparable to
+low-level languages like C and Fortran. This is achieved through
+just-in-time (JIT) compilation, which allows Julia to execute code
+efficiently. Unlike R and Python, which rely heavily on external
+packages for performance optimization, Julia's core language features
+are optimized for speed, making it a superior choice for intensive
+computational tasks. Additionally, Julia's syntax is intuitive and easy
+to learn, similar to Python, but it also provides powerful tools for
+meta-programming and multiple dispatch, which enable more flexible and
+dynamic code. The ability to call functions from R and Python seamlessly
+within Julia further enhances its versatility, making it an excellent
+choice for data scientists who require both performance and ease of use.
+
+\phantomsection\label{supplementary-material}
+\bigskip
+
+\begin{center}
+
+{\large\bf SUPPLEMENTARY MATERIAL}
+
+\end{center}
+
+\begin{description}
+\item[HTML output:]
+HTML output generated from rending the quarto source (.html file) with
+full output.
+\item[Code and data:]
+The Quarto source and the NYC Service Request dataset are available in a
+public GitHub repository: \url{https://github.com/jun-yan/arrow4chance}.
+\end{description}
+
+
+\renewcommand\refname{Further Reading}
+  \bibliography{bibliography.bib}
+
+
+
+\end{document}
