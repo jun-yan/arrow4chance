@@ -132,7 +132,10 @@ The dataset was downloaded on July 25, 2023 from
 [NYC 311 Open Data Portal](https://data.cityofnewyork.us/Social-Services/NYC-311-Data/jrb2-thup)
 in CSV format, which is about 171 MB. We compressed it with
 GNU Zip, which reduces the file size to about 33 MB.
-Our demonstration in the sequel is in Julia.
+Our demonstration in the sequel is in Julia, because it
+provides convenient access to R and Python through
+`RCall` and `PyCall`.
+
 
 ## Reading the CSV file as a DataFrame {#sec-reading}
 
