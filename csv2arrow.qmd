@@ -316,7 +316,10 @@ sort(combine(groupby(df, :Agency), nrow => :count), :count; rev=true)
 ```
 
 Interestingly, agency `DEPARTMENT OF CONSUMER AND WORKER PROTECTION`
-and `DCWP` should have been merged in the original data.
+and `DCWP` should have been merged in the original data. A closer
+investigation revealed that the 361 rows from agency
+`DEPARTMENT OF CONSUMER AND WORKER PROTECTION` had
+`Consumer Complaints Division` as their `Agency`.
 
 
 ### Using base R or the tidyverse
