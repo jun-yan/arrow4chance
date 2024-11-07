@@ -143,9 +143,13 @@ First, attach the packages to be used, assign the name of the
 compressed CSV file, and check its size in MB.
 
 ```{julia}
-using Arrow, CSV, DataFrames, PyCall, RCall
-csvnm = joinpath("data", "311_Service_Requests_2023_05_on_20230725.csv.gz")
-filesize(csvnm) / 10^6     # size of CSV file in MB
+using Arrow, CSV, DataFrames
+# interfaces to Python and R
+using PyCall, RCall
+
+csvnm = joinpath("data", "311sr.csv.gz")
+# size of CSV file in MB
+filesize(csvnm) / 10^6
 ```
 
 A visual inspection of the first few lines in the file showed the
@@ -175,10 +179,12 @@ and columns of this dataframe.
 
 ```{julia}
 df = CSV.read(
-    csvnm,                # file name
-    DataFrame,            # output table type
-    normalizenames=true,  # convert col names to valid symbols
-    missingstring=[       # strings that indicate missing values
+    csvnm,             # file name
+    DataFrame,         # output table type
+    # convert col names to valid symbols
+    normalizenames=true, 
+    # strings that indicate missing values
+    missingstring=[
         "",
         "0 Unspecified",
         "N/A",
@@ -188,12 +194,17 @@ df = CSV.read(
         "UNKNOWN",
     ],
     dateformat="m/d/Y I:M:S p",
-    downcast=true,        # use smallest possible Int types 
-    stripwhitespace=true, # strip leading and trailing whitespace
-    types=Dict(:Latitude => Float32, :Longitude => Float32),
-    drop=[:Location],     # Latitude and Longitude are sufficient
+    # use smallest possible Int types
+    downcast=true, 
+    # strip leading/trailing whitespace
+    stripwhitespace=true,
+    types=Dict(:Latitude => Float32,
+               :Longitude => Float32),
+    # Latitude and Longitude are sufficient
+    drop=[:Location], 
 )
-size(df)                  # number of rows/columns in df
+# number of rows/columns in df
+size(df)
 ```
 
 
@@ -201,7 +212,8 @@ A brief description of the columns can be obtained as follows.
 For illustration, we only show the first 6 columns.
 
 ```{julia}
-first(describe(df, :eltype, :nmissing, :nunique, :min), 6)
+first(describe(df, :eltype, :nmissing,
+               :nunique, :min), 6)
 ```
 
 The description immediately show a problem with the earliest
@@ -216,9 +228,11 @@ For illustration we create an Arrow IPC file of the first 6 columns.
 
 ```{julia}
 #| output: false
-first6nm = Arrow.write(  # returns the name of the file
-    joinpath("data", "311_requests_2023_05_first6.arrow"),
-    df[:, 1:6],          # `:` as the first index indicates all rows
+first6nm = Arrow.write(
+    # returns the name of the file
+    joinpath("data", "311sr_first6.arrow"),
+    # first index `:` indicating all rows
+    df[:, 1:6],   
 )
 ```
 
@@ -228,7 +242,8 @@ using the `PyCall` package for Julia.
 
 ```{julia}
 #| output: false
-fea = pyimport("pyarrow.feather")  # like `import pyarrow.feather as fea`
+# like `import pyarrow.feather as fea`
+fea = pyimport("pyarrow.feather")
 fea.read_table(first6nm)
 ```
 
@@ -287,9 +302,12 @@ internally to further save on space. We will use `zstd` compression
 when saving the entire data table as an Arrow IPC file.
 
 ```{julia}
-arrownm = "311_Service_Requests_2023_05.arrow"
-Arrow.write(arrownm, df; compress=:zstd)
-filesize(arrownm) / 10^6  # size of pruned, compressed Arrow IPC file in MB
+arrownm = "311sr.arrow"
+Arrow.write(arrownm, df;
+            compress=:zstd)
+# size of pruned,
+# compressed Arrow IPC file in MB
+filesize(arrownm) / 10^6
 ```
 
 Note the remarkable reduction in the size of this compressed
@@ -312,7 +330,8 @@ and sort the frequency by `Agency`:
 
 ```{julia}
 df = DataFrame(Arrow.Table(arrownm))
-sort(combine(groupby(df, :Agency), nrow => :count), :count; rev=true)
+sort(combine(groupby(df, :Agency),
+             nrow => :count), :count; rev=true)
 ```
 
 Interestingly, agency `DEPARTMENT OF CONSUMER AND WORKER PROTECTION`
@@ -332,8 +351,8 @@ we can use R `dplyr` package in the
 
 ```{r}
 #| eval: false
-
-df <- arrow::read_ipc_file($arrownm)  # pass arrownm from Julia to R
+## pass arrownm from Julia to R
+df <- arrow::read_ipc_file($arrownm)
 dplyr::count(df, Agency, sort=TRUE)
 ```
 
@@ -346,11 +365,15 @@ interface to Polars.
 
 ```{julia}
 #| eval: false
+# Julia PyCall equivalent of
+# `import polars as pl`
+pl = pyimport("polars")
 
-pl = pyimport("polars") # Julia PyCall equivalent of `import polars as pl`
-pldf = pl.read_ipc(arrownm, use_pyarrow=true)
+pldf = pl.read_ipc(arrownm,
+                   use_pyarrow=true)
 pldf.group_by("Agency").
-    agg([pl.col("Agency").count().alias("count")]).
+    agg([pl.col("Agency").
+    count().alias("count")]).
     sort("count", descending=true)
 ```
 
